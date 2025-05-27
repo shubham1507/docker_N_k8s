@@ -1,0 +1,108 @@
+docker info
+
+** What is container
+
+sudo ls -l /var/lib/docker/
+
+cat /etc/group | grep docker
+
+docker pull nginx
+docker container stop stupefied_jennings
+docker container run -d nginx
+
+docker container inspect stupefied_jennings
+
+docker container run -d -t -i --name nginx-demo --hostname nginxwebserver nginx
+
+docker container exec -it stupefied_jennings bash
+docker container exec -it stupefied_jennings ip a ---> without getting into the container
+--------------------------------
+
+** MYSQL Deployment
+
+docker container run -itd \
+--name mysql-rdbms \
+--hostname mysqldbserver \
+-e MYSQL_ROOT_PASSWORD=snj \
+-e MYSQL_ROOT_HOST='%' \
+mysql:5.7
+
+-------------------------------
+
+port forwarding 
+
+docker container run -d --name nginxx -p 8090:80 nginx
+
+-------------------
+
+Container restart policy
+
+lenovo@snj:~$ docker container stop nginx-demo
+nginx-demo
+lenovo@snj:~$ docker container ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS                     PORTS     NAMES
+6b907cb75343   nginx     "/docker-entrypoint.…"   17 hours ago   Exited (0) 4 seconds ago             nginx-demo
+lenovo@snj:~$ 
+
+
+** If Exited STATUS > 0 then its failure
+
+docker container update --restart on-failure:2 nginx-demo
+
+docker container run -d --name nginx-restart --restart on-failure:3 nginx
+docker container run -d --name nginx-dry --restart unless-stopped nginx
+
+--------------------
+
+wordpress and mysql deployment (not worked properly for me)
+
+docker container run -d  --name mysql-db -e MYSQL_ROOT_PASSWORD=terse@123 -e MYSQL_DATABASE=wordpress -e MYSQL_ROOT_HOST='%' mysql
+
+---------------------------
+Jenkins CICD deployment
+
+docker container run -d --name jenkins-cicd  -p 8090:8080 jenkins/jenkins:lts
+
+---------------------
+POINTS to REMEMBER while creating CONTAINER
+
+docker container run --rm -it --name ubuntu-demo ubuntu:latest bash
+
+Digest: sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233
+Status: Downloaded newer image for ubuntu:latest
+root@65bf20f0a657:/# 
+
+docker container exec -it jenkins-cicd  bash
+
+docker container exec -it nginx-dry cat /etc/hosts
+
+--------------------
+
+differnce between docker container create and run
+
+===============================================================================
+
+DOCKER ENGINE:IMAGES
+
+docker image history nginx:latest  => it gives layers
+
+docker image pull nginx
+
+docker ps -s -a => gives size attrib   => disk utilization
+
+
+On docker login creds get store at .docker/config.json
+
+ docker push 839024/war_build_image:19.0
+The push refers to repository [docker.io/839024/war_build_image]
+tag does not exist: 839024/war_build_image:19.0
+lenovo@snj:~$ 
+
+TO CLONE , RENAME and PUSH IMAGE back TO HUB
+
+docker image tag 839024/war_build_image:latest 839024/war2_build_image:1.0
+
+with above command we can rename image 
+docker image tag 839024/war_build_image:latest 727678/war_build_image:latest
+
+with above command we can push the same image in differnt account/repo

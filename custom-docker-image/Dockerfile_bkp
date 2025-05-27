@@ -1,0 +1,56 @@
+# FROM ubuntu:20.04
+# #MAINTAINER "Shubham Joshi<snj150731@gmail.com>"
+
+# #docker container run -d --name ubuntu-container udemy-demo
+# #docker image build -t udemy-demo .
+# #docker image build -t udemy-demo . --no-cache
+# LABEL version="20.04" environment="Production" org.opencontainers.image.auther="Shubham Joshi<snj150731@gmail.com>"
+# ENV MYSQL_ROOT_PASSWORD=snj
+# RUN apt-get update  
+# #cmd format
+# RUN ["apt-get", "-y","update"]
+# #exec format
+# RUN /bin/bash -c "apt-get -y dist-upgrade"
+# #bash format
+
+# CMD ["nginx", "-g", "deamon off"]
+
+
+
+
+FROM ubuntu:20.04
+#MAINTAINER "Shubham Joshi<snj150731@gmail.com>"
+#docker container run -d --name ubuntu-container udemy-demo
+#docker image build -t udemy-demo .
+#docker image build -t udemy-demo . --no-cache
+LABEL version="20.04" environment="Production" org.opencontainers.image.authors="Shubham Joshi<snj150731@gmail.com>"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV MYSQL_ROOT_PASSWORD=snj
+# ENV DEBIAN_FRONTEND= noninteractive
+
+# Update and install nginx
+RUN apt-get update && apt-get install -y nginx netbase
+COPY --chown=www-data:www-data demo.html index.html /usr/share/nginx/html/
+COPY --chown=www-data:www-data demo.html index.html /var/www/html/
+ADD http://archive.ubuntu.com/ubuntu/pool/main/n/netkit-telnet/telnet_0.17-44build1_amd64.deb /tmp
+RUN dpkg -i /tmp/telnet_0.17-44build1_amd64.deb 
+
+# COPY is for image layer from system 
+# once done with COPY run below commans
+# docker container run -d --name ubuntu-demo-container -p8091:80 ubuntu-demo
+# Expose port 80 (default for nginx)
+EXPOSE 80
+
+# Start nginx in foreground (corrected typo: "deamon" → "daemon")
+CMD ["nginx", "-g", "daemon off;"]
+
+
+# docker exec -it nginx-demo2  env
+# PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# HOSTNAME=1412a056787c
+# TERM=xterm
+# DEBIAN_FRONTEND=noninteractive
+# MYSQL_ROOT_PASSWORD=snj
+# HOME=/root
+# above gives env vars in container
