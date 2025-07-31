@@ -1,0 +1,14 @@
+apiVersion: v1                  # Kubernetes core API version
+kind: Pod                       # Object type: Pod
+metadata:
+  name: example-pod             # Pod name
+  labels:
+    purpose: demonstrate-args   # Custom label for organization
+spec:
+  restartPolicy: Never
+  containers:
+  - name: example-container     # Container name inside pod
+    image: ubuntu               # Container image
+    command: ["/bin/echo", "Hello"]  # Entrypoint command
+    args: ["Welcome", "to", "Kubesimplify"]  # Arguments passed to the command
+

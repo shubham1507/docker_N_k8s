@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-configmap-folded
+data:
+  mymessage: >
+    Hello, this is a folded
+    multi-line message.
+
